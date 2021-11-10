@@ -1,0 +1,14 @@
+{
+    "name": "verifymycontent/video-moderation",
+    "version": "1.0.0",
+    "description": "Video Moderation SDK",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "VerifyMyContent\\VideoModeration\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}

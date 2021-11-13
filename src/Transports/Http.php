@@ -33,9 +33,8 @@ class Http {
           'User-Agent: VMC/' . VMC_SDK_VERSION
         ], $headers);
         if ($method != 'GET') {
-          $json = json_encode($data);
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-          $header[] = 'Content-Length: ' . strlen($json);
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+          $header[] = 'Content-Length: ' . strlen($data);
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

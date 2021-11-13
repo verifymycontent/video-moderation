@@ -24,11 +24,11 @@ class Moderation {
     public function start($data)
     {
         Validators\StartModeration::validate($data);
-
-        $hmac = $this->hmac->generate($data['video']['url']);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
         return $this->http->post(
             "/api/{$this->apiVersion}/moderation",
-            $data,
+            $json,
             [
                 "Authorization: hmac {$hmac}"
             ]
@@ -37,9 +37,10 @@ class Moderation {
 
     public function get($id)
     {
-        $hmac = $this->hmac->generate($id);
+        $uri = "/api/{$this->apiVersion}/moderation/{$id}";
+        $hmac = $this->hmac->generate($uri);
         return $this->http->get(
-            "/api/{$this->apiVersion}/moderation/{$id}",
+            $uri,
             [
                 "Authorization: hmac {$hmac}"
             ]
@@ -48,13 +49,19 @@ class Moderation {
 
     public function participants($id)
     {
-        $hmac = $this->hmac->generate($id);
+        $uri = "/api/{$this->apiVersion}/moderation/{$id}/participants";
+        $hmac = $this->hmac->generate($uri);
         return $this->http->get(
-            "/api/{$this->apiVersion}/moderation/{$id}/participants",
+            $uri,
             [
                 "Authorization: hmac {$hmac}"
             ]
         );
+    }
+
+    public function setBaseUrl($url)
+    {
+        $this->http->setBaseURL($url); 
     }
 
 }

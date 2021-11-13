@@ -1,6 +1,6 @@
 {
     "name": "verifymycontent/video-moderation",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Video Moderation SDK",
     "type": "library",
     "license": "MIT",

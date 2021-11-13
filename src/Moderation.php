@@ -13,12 +13,12 @@ class Moderation {
     function __construct($apiKey, $apiSecret)
     {
         $this->hmac = new Security\Hmac($apiKey, $apiSecret);
-        $this->http = new Transports\Http("https://moderations.verifymycontent.com");
+        $this->http = new Transports\Http("https://moderation.verifymycontent.com");
     }
 
     public function useSandbox()
     {
-        $this->http->setBaseURL("https://moderations.sandbox.verifymycontent.com");
+        $this->http->setBaseURL("https://moderation.sandbox.verifymycontent.com");
     }
 
     public function start($data)

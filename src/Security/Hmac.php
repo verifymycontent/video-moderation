@@ -12,13 +12,18 @@ class Hmac {
         $this->apiSecret = $apiSecret;
     }
 
+    /**
+     * Generate the HMAC signature based on input and API keys
+     */
     public function generate($input)
     {
         $hash = hash_hmac('sha256', $input, $this->apiSecret);
         return "{$this->apiKey}:{$hash}";
     }
 
-
+    /**
+     * Validates that a generated HMAC
+     */
     public function validate($hash, $input)
     {
         return $this->generate($input) === $this->removePrefix($hash);

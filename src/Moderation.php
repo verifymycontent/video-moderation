@@ -16,11 +16,19 @@ class Moderation {
         $this->http = new Transports\Http("https://moderation.verifymycontent.com");
     }
 
+    /**
+     * Use the sandbox environment instead of the production one
+     */
     public function useSandbox()
     {
         $this->http->setBaseURL("https://moderation.sandbox.verifymycontent.com");
     }
 
+    /**
+     * Start a new video moderation
+     * 
+     * https://docs.verifymyage.com/docs/content/moderation/index.html
+     */
     public function start($data)
     {
         Validators\StartModeration::validate($data);
@@ -35,6 +43,11 @@ class Moderation {
         );
     }
 
+    /**
+     * Get a moderation by ID
+     * 
+     * https://docs.verifymyage.com/docs/content/moderation/index.html
+     */
     public function get($id)
     {
         $uri = "/api/{$this->apiVersion}/moderation/{$id}";
@@ -47,6 +60,9 @@ class Moderation {
         );
     }
 
+    /**
+     * Retrive uploader data
+     */
     public function participants($id)
     {
         $uri = "/api/{$this->apiVersion}/moderation/{$id}/participants";

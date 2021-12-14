@@ -25,12 +25,16 @@ $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY
 //$moderation->useSandbox();
 
 $response = $moderation->start([
-  "video" => [
+  "content" => [
+    "type" => "video",
     "external_id" => "YOUR-VIDEO-ID",
-    "url" => "https://example.com/video.mp4"
+    "url" => "https://example.com/video.mp4",
+    "title" => "Uploaded video title",
+    "description" => "Uploaded video description",
   ],
   "webhook" => "https://example.com/webhook",
   "customer" => [
+    "external_id" => "YOUR-CUSTOMER-UNIQUE-ID",
     "email" => "person@example.com",
     "phone" => "+4412345678"
   ]

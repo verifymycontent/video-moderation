@@ -11,9 +11,9 @@ class StartModeration {
             throw new ValidationException("Start moderation data must be an array");
         }
 
-        static::validateArray($input, "video");
+        static::validateArray($input, "content");
         static::validateArray($input, "customer");
-        static::validateURL($input["video"]);
+        static::validateURL($input["content"]);
     }
 
     private static function validateArray($input, $field)

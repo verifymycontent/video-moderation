@@ -1,6 +1,5 @@
 <?php namespace VerifyMyContent\VideoModeration\Validators;
 
-use ValidationException;
 
 class StartModeration {
 

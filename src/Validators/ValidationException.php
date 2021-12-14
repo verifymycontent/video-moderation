@@ -1,5 +1,5 @@
-<?php
+<?php namespace VerifyMyContent\VideoModeration\Validators;
 
-class ValidationException extends Exception {
+class ValidationException extends \Exception {
 
 }

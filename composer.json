@@ -1,7 +1,7 @@
 {
     "name": "verifymycontent/video-moderation",
-    "version": "1.0.2",
-    "description": "Video Moderation SDK",
+    "version": "1.0.3",
+    "description": "Content Moderation SDK",
     "type": "library",
     "license": "MIT",
     "autoload": {

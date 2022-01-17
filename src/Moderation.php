@@ -1,6 +1,6 @@
 <?php namespace VerifyMyContent\VideoModeration;
 
-define('VMC_SDK_VERSION', '1.0.4');
+define('VMC_SDK_VERSION', '1.0.5');
 
 class Moderation {
 

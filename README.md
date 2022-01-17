@@ -34,7 +34,7 @@ $response = $moderation->start([
   ],
   "webhook" => "https://example.com/webhook",
   "customer" => [
-    "external_id" => "YOUR-CUSTOMER-UNIQUE-ID",
+    "id" => "YOUR-CUSTOMER-UNIQUE-ID",
     "email" => "person@example.com",
     "phone" => "+4412345678"
   ]

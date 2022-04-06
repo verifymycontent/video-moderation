@@ -1,6 +1,6 @@
 <?php namespace VerifyMyContent\VideoModeration;
 
-define('VMC_SDK_VERSION', '1.0.5');
+define('VMC_SDK_VERSION', '1.1.0');
 
 class Moderation {
 
@@ -69,6 +69,23 @@ class Moderation {
         $hmac = $this->hmac->generate($uri);
         return $this->http->get(
             $uri,
+            [
+                "Authorization: hmac {$hmac}"
+            ]
+        );
+    }
+
+    /**
+     * Start livestream
+     */
+    public function livestream($data)
+    {
+        Validators\LiveStreamModeration::validate($data);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
+        return $this->http->post(
+            "/api/{$this->apiVersion}/livestream",
+            $json,
             [
                 "Authorization: hmac {$hmac}"
             ]

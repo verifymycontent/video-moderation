@@ -75,6 +75,23 @@ class Moderation {
         );
     }
 
+    /**
+     * Start livestream
+     */
+    public function livestream($data)
+    {
+        Validators\LiveStreamModeration::validate($data);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
+        return $this->http->post(
+            "/api/{$this->apiVersion}/livestream",
+            $json,
+            [
+                "Authorization: hmac {$hmac}"
+            ]
+        );
+    }
+
     public function setBaseUrl($url)
     {
         $this->http->setBaseURL($url); 

@@ -1,6 +1,6 @@
 # VerifyMyContent Video Moderation PHP SDK
 
-PHP SDK to use VerifyMyContent Video Moderation service. 
+PHP SDK to use the VerifyMyContent Video Moderation service.
 
 ## Installation
 
@@ -12,9 +12,9 @@ composer require verifymycontent/video-moderation
 
 The main class to handle the moderation integration process is the `VerifyMyContent\VideoModeration\Moderation`. It will abstract the HMAC generation for the API calls.
 
-### Start a moderation
+### Start a Moderation
 
-Use the `start` method to create a moderation, like the example bellow:
+Use the `start` method to create a moderation, like the example below:
 
 ```php
 <?php
@@ -50,7 +50,7 @@ if (!isset($response['redirect_url'])) {
 header("Location: {$response['redirect_url']}");
 ```
 
-### Get a moderation by id
+### Retrieve Moderation by ID
 
 Retrieves a specific moderation to get current status. Example:
 
@@ -67,7 +67,7 @@ $response = $moderation->get($moderationID);
 var_dump($response['status']);
 ```
 
-### Get uploader data
+### Get Uploader Data
 
 It will return uploader's identity check information if the moderation status is `Approved`. Example:
 

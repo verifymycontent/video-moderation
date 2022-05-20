@@ -84,6 +84,63 @@ $response = $moderation->participants($moderationID);
 var_dump($response);
 ```
 
+# Create a Live Stream Moderation
+
+Use the `createLivestream` method to create a live stream moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createLivestream([
+  "external_id" => "YOUR-LIVESTREAM-ID",
+  "embed_url" => "https://example.com/live/",
+  "title" => "Live stream title",
+  "description" => "Live stream description",
+  "webhook" => "https://example.com/webhook",
+  "stream" => [
+      "protocol" => "webrtc",
+      "url" => "https://example.com/live/",
+  ],
+  "customer" => [
+      "id" => "YOUR-CUSTOMER-UNIQUE-ID",
+      "email" => "person@example.com",
+      "phone" => "+4412345678"
+  ]
+]);
+
+if (!isset($response['login_url'])) {
+    die("Could not get a response from the VMC API");
+}
+
+// save $response['id'] to start live stream later
+
+// redirect uploader to check identity
+header("Location: {$response['login_url']}");
+```
+
+# Start a created Live Stream Moderation
+
+When you receive the webhook with the status `Authorized`, it means you can now start to broadcast a live stream, you can then use the `startLivestream` method to trigger the moderation:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+    
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$success = $moderation->startLivestream($_GET['id']);
+var_dump($success === true);
+```
+
+**Note:** You'll have a limit of time to send this request after you received the webhook notifying the user was authorized to start the broadcast.
+
 # Webhook Security
 
 In order to confirm that a webhook POST was sent from VerifyMyContent, we provide a helper class to validate that the Authorization header was sent correctly. Example:

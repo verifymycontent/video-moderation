@@ -84,7 +84,11 @@ $response = $moderation->participants($moderationID);
 var_dump($response);
 ```
 
-# Create a Live Stream Moderation
+## Live Stream
+
+To moderate a live stream broadcast you'll need to use different APIs as described below.
+
+### Create a Live Stream Moderation
 
 Use the `createLivestream` method to create a live stream moderation, like the example below:
 
@@ -123,7 +127,7 @@ if (!isset($response['login_url'])) {
 header("Location: {$response['login_url']}");
 ```
 
-# Start a created Live Stream Moderation
+### Start a created Live Stream Moderation
 
 When you receive the webhook with the status `Authorized`, it means you can now start to broadcast a live stream, you can then use the `startLivestream` method to trigger the moderation:
 

@@ -19,6 +19,11 @@ class Http {
         return $this->request("POST", $uri, $body, $headers);
     }
 
+    public function patch($uri, $body, $headers) 
+    {
+        return $this->request("PATCH", $uri, $body, $headers);
+    }
+
     public function get($uri, $headers) 
     {
         return $this->request("GET", $uri, null, $headers);

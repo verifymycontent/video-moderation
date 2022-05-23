@@ -101,7 +101,7 @@ class Moderation {
         $hmac = $this->hmac->generate($uri);
         return $this->http->patch(
             $uri,
-            "{}",
+            "",
             [
                 "Authorization: hmac {$hmac}"
             ]

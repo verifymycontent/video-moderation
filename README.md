@@ -129,7 +129,7 @@ header("Location: {$response['login_url']}");
 
 ### Start a created Live Stream Moderation
 
-When you receive the webhook with the status `Authorized`, it means you can now start to broadcast a live stream, you can then use the `startLivestream` method to trigger the moderation:
+When you receive the webhook with the status `Authorised`, it means you can now start to broadcast a live stream, you can then use the `startLivestream` method to trigger the moderation:
 
 ```php
 <?php
@@ -143,7 +143,7 @@ $success = $moderation->startLivestream($_GET['id']);
 var_dump($success === true);
 ```
 
-**Note:** You'll have a limit of time to send this request after you received the webhook notifying the user was authorized to start the broadcast.
+**Note:** You'll have a limit of time to send this request after you received the webhook notifying the user was authorised to start the broadcast.
 
 # Webhook Security
 

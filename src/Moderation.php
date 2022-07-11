@@ -93,6 +93,23 @@ class Moderation {
     }
 
     /**
+     * Create anonymous livestream
+     */
+    public function createAnonymousLivestream($data)
+    {
+        Validators\LiveStreamModeration::validate($data);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
+        return $this->http->post(
+            "/api/{$this->apiVersion}/livestream-anonymous",
+            $json,
+            [
+                "Authorization: hmac {$hmac}"
+            ]
+        );
+    }
+
+    /**
      * Start livestream
      */
     public function startLivestream($id)

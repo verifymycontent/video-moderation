@@ -1,19 +1,26 @@
 <?php namespace VerifyMyContent\VideoModeration;
 
-define('VMC_SDK_VERSION', '2.0.1');
+define('VMC_SDK_VERSION', '3.0.0');
+
+const VALID_API_VERSIONS = ['v1', 'v2'];
+const DEFAULT_API_VERSION = 'v2';
 
 class Moderation {
-
     private $hmac;
 
     private $http;
 
-    private $apiVersion = "v1";
+    /**
+     * @var string
+     * VMC Moderation API version. Valid values: v1, v2
+     */
+    private $apiVersion;
 
-    function __construct($apiKey, $apiSecret)
+    function __construct($apiKey, $apiSecret, $apiVersion = DEFAULT_API_VERSION)
     {
         $this->hmac = new Security\Hmac($apiKey, $apiSecret);
         $this->http = new Transports\Http("https://moderation.verifymycontent.com");
+        $this->apiVersion = in_array($apiVersion, VALID_API_VERSIONS) ? $apiVersion : DEFAULT_API_VERSION;
     }
 
     /**
@@ -26,7 +33,7 @@ class Moderation {
 
     /**
      * Start a new video moderation
-     * 
+     *
      * https://docs.verifymyage.com/docs/content/moderation/index.html
      */
     public function start($data)
@@ -45,7 +52,7 @@ class Moderation {
 
     /**
      * Get a moderation by ID
-     * 
+     *
      * https://docs.verifymyage.com/docs/content/moderation/index.html
      */
     public function get($id)
@@ -127,7 +134,7 @@ class Moderation {
 
     public function setBaseUrl($url)
     {
-        $this->http->setBaseURL($url); 
+        $this->http->setBaseURL($url);
     }
 
 }

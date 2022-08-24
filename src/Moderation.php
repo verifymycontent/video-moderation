@@ -1,5 +1,7 @@
 <?php namespace VerifyMyContent\VideoModeration;
 
+use VerifyMyContent\VideoModeration\Validators\ValidationException;
+
 define('VMC_SDK_VERSION', '2.0.1');
 
 class Moderation {
@@ -26,7 +28,7 @@ class Moderation {
 
     /**
      * Start a new video moderation
-     * 
+     *
      * https://docs.verifymyage.com/docs/content/moderation/index.html
      */
     public function start($data)
@@ -45,7 +47,7 @@ class Moderation {
 
     /**
      * Get a moderation by ID
-     * 
+     *
      * https://docs.verifymyage.com/docs/content/moderation/index.html
      */
     public function get($id)
@@ -127,7 +129,33 @@ class Moderation {
 
     public function setBaseUrl($url)
     {
-        $this->http->setBaseURL($url); 
+        $this->http->setBaseURL($url);
     }
 
+    /**
+     * @throws ValidationException
+     */
+    public function createComplaint($data){
+        Validators\ComplaintConsent::validate($data);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
+        return $this->http->post(
+            "/api/{$this->apiVersion}/complaint-consent",
+            $json,
+            [
+                "Authorization: hmac {$hmac}"
+            ]
+        );
+    }
+
+    public function getComplaint($id){
+        $uri = "/api/{$this->apiVersion}/complaint-consent/{$id}";
+        $hmac = $this->hmac->generate($uri);
+        return $this->http->get(
+            $uri,
+            [
+                "Authorization: hmac {$hmac}"
+            ]
+        );
+    }
 }

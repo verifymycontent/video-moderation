@@ -16,14 +16,14 @@ abstract class Validator
      * @param $input array
      * @throws ValidationException
      */
-    protected static function validateArray($input, $field = null){
+    protected static function validateArray($input, $field = null, $minLength = 0){
         if ($field === null && !is_array($input)) {
             throw new ValidationException("Data must be an array");
         }
 
         if ($field !== null){
-            if (!array_key_exists($field, $input) || !is_array($input[$field])){
-                throw new ValidationException("Missing required array field: '{$field}'");
+            if (!array_key_exists($field, $input) || !is_array($input[$field]) || count($input[$field]) < $minLength) {
+                throw new ValidationException("{$field} must be an array");
             }
         }
     }

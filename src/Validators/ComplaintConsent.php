@@ -11,10 +11,6 @@ class ComplaintConsent extends Validator
 
         self::validateString($input["content"], "external_id");
         self::validateString($input, "webhook");
-
-        if (is_array($input["customer"]) && array_key_exists("id", $input["customer"]))
-        {
-            self::validateString($input["customer"], "id");
-        }
+        self::validateString($input["customer"], "id");
     }
 }

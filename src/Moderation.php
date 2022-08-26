@@ -135,7 +135,7 @@ class Moderation {
     /**
      * @throws ValidationException
      */
-    public function createComplaint($data){
+    public function createComplaintConsent($data){
         Validators\ComplaintConsent::validate($data);
         $json = json_encode($data);
         $hmac = $this->hmac->generate($json);
@@ -148,11 +148,32 @@ class Moderation {
         );
     }
 
-    public function getComplaint($id){
-        $uri = "/api/{$this->apiVersion}/complaint-consent/{$id}";
-        $hmac = $this->hmac->generate($uri);
-        return $this->http->get(
-            $uri,
+    /**
+     * @throws ValidationException
+     */
+    public function createComplaintModeration($data){
+        Validators\ComplaintModeration::validate($data);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
+        return $this->http->post(
+            "/api/{$this->apiVersion}/complaint-moderation",
+            $json,
+            [
+                "Authorization: hmac {$hmac}"
+            ]
+        );
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function createComplaintLivestream($data){
+        Validators\ComplaintLivestream::validate($data);
+        $json = json_encode($data);
+        $hmac = $this->hmac->generate($json);
+        return $this->http->post(
+            "/api/{$this->apiVersion}/complaint-livestream",
+            $json,
             [
                 "Authorization: hmac {$hmac}"
             ]

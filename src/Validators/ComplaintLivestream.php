@@ -11,7 +11,7 @@ class ComplaintLivestream extends Validator
         self::validateString($input["stream"], "external_id");
         self::validateArray($input["stream"], "tags", 1);
         self::validateString($input["stream"], "livestream_id");
-        self::validateDate($input["complained_at"]);
+        self::validateString($input["complained_at"]);
         self::validateString($input, "webhook");
 
         if (is_array($input["customer"]) && array_key_exists("id", $input["customer"]))

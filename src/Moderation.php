@@ -170,9 +170,7 @@ class Moderation {
      */
     public function createComplaintLivestream($data){
         Validators\ComplaintLivestream::validate($data);
-        $data['complained_at'] = $data['complained_at']->format(DateTime::ISO8601);
         $json = json_encode($data);
-        var_dump($json);
         $hmac = $this->hmac->generate($json);
         return $this->http->post(
             "/api/{$this->apiVersion}/complaint-livestream",

@@ -2,6 +2,8 @@
 
 namespace VerifyMyContent\VideoModeration\Validators;
 
+use DateTime;
+
 abstract class Validator
 {
 
@@ -12,8 +14,9 @@ abstract class Validator
     abstract public static function validate($input);
 
     /**
-     * @param $field
      * @param $input array
+     * @param $field
+     * @param int $minLength
      * @throws ValidationException
      */
     protected static function validateArray($input, $field = null, $minLength = 0){
@@ -80,6 +83,23 @@ abstract class Validator
         if ($field !== null) {
             if (!array_key_exists($field, $input) || !is_int($input[$field])) {
                 throw new ValidationException("Missing required integer field: '{$field}'");
+            }
+        }
+    }
+
+    /**
+     * @param $field
+     * @param $input array|string
+     * @throws ValidationException
+     */
+    protected static function validateDate($input, $field = null){
+        if (($field === null) && !($input instanceof DateTime)) {
+            throw new ValidationException("Data must be a DateTime object");
+        }
+
+        if ($field !== null) {
+            if (!array_key_exists($field, $input) || !($input[$field] instanceof DateTime)) {
+                throw new ValidationException("Missing required DateTime field: '{$field}'");
             }
         }
     }

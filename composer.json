@@ -11,6 +11,6 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "verifymycontent/sdk": "1.0.5"
+        "verifymycontent/sdk": "1.0.4"
     }
 }

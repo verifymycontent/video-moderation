@@ -1,9 +1,15 @@
 <?php namespace VerifyMyContent\VideoModeration;
 
 use VerifyMyContent\Commons\Transport\InvalidStatusCodeException;
+use VerifyMyContent\SDK\Complaint\Entity\Requests\CreateConsentComplaintRequest;
+use VerifyMyContent\SDK\Complaint\Entity\Requests\CreateLiveContentComplaintRequest;
+use VerifyMyContent\SDK\Complaint\Entity\Requests\CreateStaticContentComplaintRequest;
 use VerifyMyContent\SDK\Complaint\Entity\Responses\CreateConsentComplaintResponse;
 use VerifyMyContent\SDK\Complaint\Entity\Responses\CreateLiveContentComplaintResponse;
 use VerifyMyContent\SDK\Complaint\Entity\Responses\CreateStaticContentComplaintResponse;
+use VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateAnonymousLiveContentModerationRequest;
+use VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateLiveContentModerationRequest;
+use VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateStaticContentModerationRequest;
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\CreateLiveContentModerationResponse;
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\CreateStaticContentModerationResponse;
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetLiveContentModerationResponse;
@@ -39,6 +45,7 @@ class Moderation {
      *
      * https://docs.verifymyage.com/docs/content/moderation/index.html
      *
+     * @param CreateStaticContentModerationRequest $data
      * @return CreateStaticContentModerationResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -53,6 +60,7 @@ class Moderation {
      *
      * https://docs.verifymyage.com/docs/content/moderation-v2/index.html
      *
+     * @param CreateStaticContentModerationRequest $data
      * @return CreateStaticContentModerationResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -67,6 +75,7 @@ class Moderation {
      *
      * https://docs.verifymyage.com/docs/content/moderation-v2/index.html
      *
+     * @param string $id
      * @return GetStaticContentModerationResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -79,6 +88,7 @@ class Moderation {
     /**
      * Retrieve uploader data
      *
+     * @param string $id
      * @return GetStaticContentModerationParticipantsResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -91,18 +101,20 @@ class Moderation {
   /**
    * Create livestream
    *
-   * @return void
+   * @param CreateLiveContentModerationRequest $data
+   * @return CreateLiveContentModerationResponse
    * @throws InvalidStatusCodeException
    * @throws ValidationException
    */
     public function createLivestream($data)
     {
-        $this->contentModerationClient->createLiveContentModeration($data);
+        return $this->contentModerationClient->createLiveContentModeration($data);
     }
 
     /**
      * Create anonymous livestream
      *
+     * @param CreateAnonymousLiveContentModerationRequest $data
      * @return CreateLiveContentModerationResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -115,6 +127,7 @@ class Moderation {
     /**
      * * Start livestream
      *
+     * @param string $id
      * @return void
      * @throws InvalidStatusCodeException
      */
@@ -126,6 +139,7 @@ class Moderation {
     /**
      * * Get livestream
      *
+     * @param string $id
      * @return GetLiveContentModerationResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -138,6 +152,7 @@ class Moderation {
     /**
      * * Create consent complaint
      *
+     * @param CreateConsentComplaintRequest $data
      * @return CreateConsentComplaintResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -149,6 +164,7 @@ class Moderation {
     /**
      * * Create moderation complaint
      *
+     * @param CreateStaticContentComplaintRequest $data
      * @return CreateStaticContentComplaintResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException
@@ -160,6 +176,7 @@ class Moderation {
     /**
      * * Create livestream complaint
      *
+     * @param CreateLiveContentComplaintRequest $data
      * @return CreateLiveContentComplaintResponse
      * @throws InvalidStatusCodeException
      * @throws ValidationException

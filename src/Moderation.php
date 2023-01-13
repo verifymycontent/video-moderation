@@ -1,22 +1,28 @@
 <?php namespace VerifyMyContent\VideoModeration;
 
-use DateTime;
-use VerifyMyContent\VideoModeration\Validators\ValidationException;
+use VerifyMyContent\Commons\Transport\InvalidStatusCodeException;
+use VerifyMyContent\SDK\Complaint\Entity\Responses\CreateConsentComplaintResponse;
+use VerifyMyContent\SDK\Complaint\Entity\Responses\CreateLiveContentComplaintResponse;
+use VerifyMyContent\SDK\Complaint\Entity\Responses\CreateStaticContentComplaintResponse;
+use VerifyMyContent\SDK\ContentModeration\Entity\Responses\CreateLiveContentModerationResponse;
+use VerifyMyContent\SDK\ContentModeration\Entity\Responses\CreateStaticContentModerationResponse;
+use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetLiveContentModerationResponse;
+use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetStaticContentModerationParticipantsResponse;
+use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetStaticContentModerationResponse;
+use VerifyMyContent\SDK\Core\Validator\ValidationException;
+use VerifyMyContent\SDK\VerifyMyContent;
 
-define('VMC_SDK_VERSION', '2.0.1');
+define('VMC_SDK_VERSION', '2.0.7');
 
 class Moderation {
 
-    private $hmac;
+    private $contentModerationClient;
+    private $complaintClient;
 
-    private $http;
-
-    private $apiVersion = "v1";
-
-    function __construct($apiKey, $apiSecret)
+    function __construct($clientID, $clientSecret)
     {
-        $this->hmac = new Security\Hmac($apiKey, $apiSecret);
-        $this->http = new Transports\Http("https://moderation.verifymycontent.com");
+      $this->contentModerationClient = (new VerifyMyContent($clientID, $clientSecret))->contentModeration();
+      $this->complaintClient = (new VerifyMyContent($clientID, $clientSecret))->complaint();
     }
 
     /**
@@ -24,160 +30,141 @@ class Moderation {
      */
     public function useSandbox()
     {
-        $this->http->setBaseURL("https://moderation.sandbox.verifymycontent.com");
+        $this->contentModerationClient->useSandbox();
+        $this->complaintClient->useSandbox();
     }
 
     /**
-     * Start a new video moderation
+     * * Start a new video moderation
      *
      * https://docs.verifymyage.com/docs/content/moderation/index.html
+     *
+     * @return CreateStaticContentModerationResponse
+     * @throws InvalidStatusCodeException
+     * @throws ValidationException
      */
     public function start($data)
     {
-        Validators\StartModeration::validate($data);
-        $json = json_encode($data);
-        $hmac = $this->hmac->generate($json);
-        return $this->http->post(
-            "/api/{$this->apiVersion}/moderation",
-            $json,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->contentModerationClient->createStaticContentModeration($data);
     }
 
     /**
-     * Get a moderation by ID
+     * * Start a new video moderation V2
      *
-     * https://docs.verifymyage.com/docs/content/moderation/index.html
+     * https://docs.verifymyage.com/docs/content/moderation-v2/index.html
+     *
+     * @return CreateStaticContentModerationResponse
+     * @throws InvalidStatusCodeException
+     * @throws ValidationException
+     */
+    public function startV2($data)
+    {
+        return $this->contentModerationClient->createStaticContentModerationV2($data);
+    }
+
+    /**
+     * * Get a moderation by ID
+     *
+     * https://docs.verifymyage.com/docs/content/moderation-v2/index.html
+     *
+     * @return GetStaticContentModerationResponse
+     * @throws InvalidStatusCodeException
+     * @throws ValidationException
      */
     public function get($id)
     {
-        $uri = "/api/{$this->apiVersion}/moderation/{$id}";
-        $hmac = $this->hmac->generate($uri);
-        return $this->http->get(
-            $uri,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->contentModerationClient->getStaticContentModeration($id);
     }
 
     /**
-     * Retrive uploader data
+     * Retrieve uploader data
+     *
+     * @return GetStaticContentModerationParticipantsResponse
+     * @throws InvalidStatusCodeException
+     * @throws ValidationException
      */
     public function participants($id)
     {
-        $uri = "/api/{$this->apiVersion}/moderation/{$id}/participants";
-        $hmac = $this->hmac->generate($uri);
-        return $this->http->get(
-            $uri,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->contentModerationClient->getStaticContentModerationParticipants($id);
     }
 
-    /**
-     * Create livestream
-     */
+  /**
+   * Create livestream
+   *
+   * @return void
+   * @throws InvalidStatusCodeException
+   * @throws ValidationException
+   */
     public function createLivestream($data)
     {
-        Validators\LiveStreamModeration::validate($data);
-        $json = json_encode($data);
-        $hmac = $this->hmac->generate($json);
-        return $this->http->post(
-            "/api/{$this->apiVersion}/livestream",
-            $json,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        $this->contentModerationClient->createLiveContentModeration($data);
     }
 
     /**
      * Create anonymous livestream
+     *
+     * @return CreateLiveContentModerationResponse
+     * @throws InvalidStatusCodeException
+     * @throws ValidationException
      */
     public function createAnonymousLivestream($data)
     {
-        Validators\LiveStreamModeration::validate($data);
-        $json = json_encode($data);
-        $hmac = $this->hmac->generate($json);
-        return $this->http->post(
-            "/api/{$this->apiVersion}/livestream-anonymous",
-            $json,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->contentModerationClient->createAnonymousLiveContentModeration($data);
     }
 
     /**
-     * Start livestream
+     * * Start livestream
+     *
+     * @return void
+     * @throws InvalidStatusCodeException
      */
     public function startLivestream($id)
     {
-        $uri = "/api/{$this->apiVersion}/livestream/{$id}/start";
-        $hmac = $this->hmac->generate($uri);
-        return $this->http->patch(
-            $uri,
-            "",
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
-    }
-
-    public function setBaseUrl($url)
-    {
-        $this->http->setBaseURL($url);
+      $this->contentModerationClient->startLiveContentModeration($id);
     }
 
     /**
+     * * Get livestream
+     *
+     * @return GetLiveContentModerationResponse
+     * @throws InvalidStatusCodeException
+     * @throws ValidationException
+     */
+    public function getLivestream($id)
+    {
+      return $this->contentModerationClient->getLiveContentModeration($id);
+    }
+
+    /**
+     * * Create consent complaint
+     *
+     * @return CreateConsentComplaintResponse
+     * @throws InvalidStatusCodeException
      * @throws ValidationException
      */
     public function createComplaintConsent($data){
-        Validators\ComplaintConsent::validate($data);
-        $json = json_encode($data);
-        $hmac = $this->hmac->generate($json);
-        return $this->http->post(
-            "/api/{$this->apiVersion}/complaint-consent",
-            $json,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->complaintClient->createConsentComplaint($data);
     }
 
     /**
+     * * Create moderation complaint
+     *
+     * @return CreateStaticContentComplaintResponse
+     * @throws InvalidStatusCodeException
      * @throws ValidationException
      */
     public function createComplaintModeration($data){
-        Validators\ComplaintModeration::validate($data);
-        $json = json_encode($data);
-        $hmac = $this->hmac->generate($json);
-        return $this->http->post(
-            "/api/{$this->apiVersion}/complaint-moderation",
-            $json,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->complaintClient->createStaticContentComplaint($data);
     }
 
     /**
+     * * Create livestream complaint
+     *
+     * @return CreateLiveContentComplaintResponse
+     * @throws InvalidStatusCodeException
      * @throws ValidationException
      */
     public function createComplaintLivestream($data){
-        Validators\ComplaintLivestream::validate($data);
-        $json = json_encode($data);
-        $hmac = $this->hmac->generate($json);
-        return $this->http->post(
-            "/api/{$this->apiVersion}/complaint-livestream",
-            $json,
-            [
-                "Authorization: hmac {$hmac}"
-            ]
-        );
+        return $this->complaintClient->createLiveContentComplaint($data);
     }
 }

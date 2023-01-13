@@ -14,7 +14,8 @@ The main class to handle the moderation integration process is the `VerifyMyCont
 
 ### Start a Moderation
 
-Use the `start` method to create a moderation, like the example below:
+Use the `startV2` method to create a moderation, like the example below:
+We still have available the method `start`, which is the previous version of the above, but we strongly recommend not to use it, since the v2 provides more security to the whole flow
 
 ```php
 <?php
@@ -24,7 +25,7 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$response = $moderation->start([
+$response = $moderation->startV2([
   "content" => [
     "type" => "video",
     "external_id" => "YOUR-VIDEO-ID",
@@ -157,8 +158,8 @@ require(__DIR__ . "/vendor/autoload.php");
 $body = file_get_contents('php://input');
 // get headers
 $headers = getallheaders();
-// instatiate VerifyMyContent helper class
-$hmac = new VerifyMyContent\VideoModeration\Security\Hmac(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+// instantiate VerifyMyContent helper class
+$hmac = new VerifyMyContent\Commons\Security\HMAC(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 // validate hmac Authorization
 if(!array_key_exists('Authorization', $headers) || !$hmac->validate($headers['Authorization'], $body)) {
   die("This request did not come from VerifyMyContent");

@@ -25,7 +25,7 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$response = $moderation->startV2([
+$response = $moderation->startV2(new \VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateStaticContentModerationRequest([
   "content" => [
     "type" => "video",
     "external_id" => "YOUR-VIDEO-ID",
@@ -39,7 +39,7 @@ $response = $moderation->startV2([
     "email" => "person@example.com",
     "phone" => "+4412345678"
   ]
-]);
+]));
 
 if (!isset($response['redirect_url'])) {
     die("Could not get a response from the VMC API");
@@ -101,7 +101,7 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$response = $moderation->createLivestream([
+$response = $moderation->createLivestream(new \VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateLiveContentModerationRequest([
   "external_id" => "YOUR-LIVESTREAM-ID",
   "embed_url" => "https://example.com/live/",
   "title" => "Live stream title",
@@ -116,7 +116,7 @@ $response = $moderation->createLivestream([
       "email" => "person@example.com",
       "phone" => "+4412345678"
   ]
-]);
+]));
 
 if (!isset($response['login_url'])) {
     die("Could not get a response from the VMC API");

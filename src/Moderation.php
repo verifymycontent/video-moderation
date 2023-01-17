@@ -56,21 +56,6 @@ class Moderation {
     }
 
     /**
-     * * Start a new video moderation V2
-     *
-     * https://docs.verifymyage.com/docs/content/moderation-v2/index.html
-     *
-     * @param CreateStaticContentModerationRequest $data
-     * @return CreateStaticContentModerationResponse
-     * @throws InvalidStatusCodeException
-     * @throws ValidationException
-     */
-    public function startV2($data)
-    {
-        return $this->contentModerationClient->createStaticContentModerationV2($data);
-    }
-
-    /**
      * * Get a moderation by ID
      *
      * https://docs.verifymyage.com/docs/content/moderation-v2/index.html

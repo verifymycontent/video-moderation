@@ -14,8 +14,7 @@ The main class to handle the moderation integration process is the `VerifyMyCont
 
 ### Start a Moderation
 
-Use the `startV2` method to create a moderation, like the example below:
-We still have available the method `start`, which is the previous version of the above, but we strongly recommend not to use it, since the v2 provides more security to the whole flow
+Use the `start` method to create a moderation, like the example below:
 
 ```php
 <?php
@@ -25,7 +24,7 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$response = $moderation->startV2(new \VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateStaticContentModerationRequest([
+$response = $moderation->start(new \VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateStaticContentModerationRequest([
   "content" => [
     "type" => "video",
     "external_id" => "YOUR-VIDEO-ID",

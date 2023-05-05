@@ -145,6 +145,96 @@ var_dump($success === true);
 
 **Note:** You'll have a limit of time to send this request after you received the webhook notifying the user was authorised to start the broadcast.
 
+## Complaint Resolution
+
+To start a complaint for previously uploaded content. You need to send the original content and the violations raised by the user.
+
+### Create a Complaint Moderation
+
+Use the `createComplaintModeration` method to create a complaint moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createComplaintModeration(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateStaticContentComplaintRequest([
+   "content" => [
+      "description" => "Your description", 
+      "external_id" => "YOUR-VIDEO-ID", 
+      "tags" => [
+          "VIOLATION_1" 
+      ], 
+      "title" => "Your title", 
+      "type" => "video", 
+      "url" => "https://example.com/video.mp4" 
+   ], 
+   "customer" => [
+      "id" => "YOUR-USER-ID" 
+   ], 
+   "webhook" => "https://example.com/webhook" 
+]));
+
+var_dump($response);
+```
+
+### Create a Live Stream Complaint Moderation
+
+Use the `createComplaintLivestream` method to create a live stream complaint moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createComplaintLivestream(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateLiveContentComplaintRequest([
+   "complained_at" => "2022-11-04T12:04:08.658Z", 
+   "customer" => [
+      "id" => "YOUR-USER-ID" 
+   ], 
+   "stream" => [
+      "external_id" => "YOUR-LIVESTREAM-ID", 
+      "tags" => [
+        "VIOLATION_1" 
+      ]
+   ], 
+   "webhook" => "https://example.com/webhook" 
+]));
+
+var_dump($response);
+```
+
+### Create a Consent Complaint
+
+Use the `createComplaintConsent` method to create a complaint consent moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createComplaintConsent(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateConsentComplaintRequest([
+   "content" => [
+      "external_id" => "string" 
+   ], 
+   "customer" => [
+      "id" => "string" 
+   ], 
+   "webhook" => "string"
+]));
+
+var_dump($response);
+```
+
 # Webhook Security
 
 In order to confirm that a webhook POST was sent from VerifyMyContent, we provide a helper class to validate that the Authorization header was sent correctly. Example:

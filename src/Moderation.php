@@ -122,6 +122,19 @@ class Moderation {
     }
 
     /**
+     * * Change livestream rule
+     *
+     * @param string $id
+     * @param ChangeLiveContentRuleRequest $data
+     * @return void
+     * @throws InvalidStatusCodeException
+     */
+    public function changeLivestreamRule($id, $data)
+    {
+      $this->contentModerationClient->changeLiveContentRule($id, $data);
+    }
+
+    /**
      * * Get livestream
      *
      * @param string $id

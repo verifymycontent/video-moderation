@@ -137,6 +137,24 @@ var_dump($success === true);
 **Note:** You'll have a limit of time to send this request after you received the webhook notifying the user was authorised to start the broadcast.
 
 
+### Updating Live Stream moderation rules
+This endpoint allows you to update the moderation rules for a specific live stream
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+    
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$success = $moderation->changeLivestreamRule($_GET['id'], new \VerifyMyContent\SDK\ContentModeration\Entity\Requests\ChangeLiveContentRuleRequest([
+  "rule" => "no-nudity"
+]));
+var_dump($success === true);
+```
+
+
 ## Complaint Resolution
 
 To start a complaint for previously uploaded content. You need to send the original content and the violations raised by the user.

@@ -40,14 +40,10 @@ $response = $moderation->start(new \VerifyMyContent\SDK\ContentModeration\Entity
   ]
 ]));
 
-if (!isset($response['redirect_url'])) {
-    die("Could not get a response from the VMC API");
-}
-
-// save $response['id'] if you want to call the moderation status endpoint later
+// save $response->id if you want to call the moderation status endpoint later
 
 // redirect uploader to check identity
-header("Location: {$response['redirect_url']}");
+header("Location: {$response->redirect_url}");
 ```
 
 ### Retrieve Moderation by ID
@@ -62,9 +58,8 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$response = $moderation->get($moderationID);
-
-var_dump($response['status']);
+// Printing current status
+echo "Status: {$response->status}";
 ```
 
 ### Get Uploader Data
@@ -117,14 +112,10 @@ $response = $moderation->createLivestream(new \VerifyMyContent\SDK\ContentModera
   ]
 ]));
 
-if (!isset($response['login_url'])) {
-    die("Could not get a response from the VMC API");
-}
-
-// save $response['id'] to start live stream later
+// save $response->id to start live stream later
 
 // redirect uploader to check identity
-header("Location: {$response['login_url']}");
+header("Location: {$response->login_url");
 ```
 
 ### Start a created Live Stream Moderation

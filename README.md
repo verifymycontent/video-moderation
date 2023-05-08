@@ -136,6 +136,7 @@ var_dump($success === true);
 
 **Note:** You'll have a limit of time to send this request after you received the webhook notifying the user was authorised to start the broadcast.
 
+
 ## Complaint Resolution
 
 To start a complaint for previously uploaded content. You need to send the original content and the violations raised by the user.
@@ -215,12 +216,12 @@ $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY
 
 $response = $moderation->createComplaintConsent(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateConsentComplaintRequest([
    "content" => [
-      "external_id" => "string" 
+      "external_id" => "YOUR-VIDEO-ID" 
    ], 
    "customer" => [
-      "id" => "string" 
+      "id" => "YOUR-USER-ID" 
    ], 
-   "webhook" => "string"
+   "webhook" => "https://example.com/webhook"
 ]));
 
 var_dump($response);

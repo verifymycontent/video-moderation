@@ -40,14 +40,10 @@ $response = $moderation->start(new \VerifyMyContent\SDK\ContentModeration\Entity
   ]
 ]));
 
-if (!isset($response['redirect_url'])) {
-    die("Could not get a response from the VMC API");
-}
-
-// save $response['id'] if you want to call the moderation status endpoint later
+// save $response->id if you want to call the moderation status endpoint later
 
 // redirect uploader to check identity
-header("Location: {$response['redirect_url']}");
+header("Location: {$response->redirect_url}");
 ```
 
 ### Retrieve Moderation by ID
@@ -62,9 +58,8 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$response = $moderation->get($moderationID);
-
-var_dump($response['status']);
+// Printing current status
+echo "Status: {$response->status}";
 ```
 
 ### Get Uploader Data
@@ -117,14 +112,10 @@ $response = $moderation->createLivestream(new \VerifyMyContent\SDK\ContentModera
   ]
 ]));
 
-if (!isset($response['login_url'])) {
-    die("Could not get a response from the VMC API");
-}
-
-// save $response['id'] to start live stream later
+// save $response->id to start live stream later
 
 // redirect uploader to check identity
-header("Location: {$response['login_url']}");
+header("Location: {$response->login_url");
 ```
 
 ### Start a created Live Stream Moderation
@@ -161,6 +152,97 @@ $success = $moderation->changeLivestreamRule($_GET['id'], new \VerifyMyContent\S
   "rule" => "no-nudity"
 ]));
 var_dump($success === true);
+```
+
+
+## Complaint Resolution
+
+To start a complaint for previously uploaded content. You need to send the original content and the violations raised by the user.
+
+### Create a Complaint Moderation
+
+Use the `createComplaintModeration` method to create a complaint moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createComplaintModeration(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateStaticContentComplaintRequest([
+   "content" => [
+      "description" => "Your description", 
+      "external_id" => "YOUR-VIDEO-ID", 
+      "tags" => [
+          "VIOLATION_1" 
+      ], 
+      "title" => "Your title", 
+      "type" => "video", 
+      "url" => "https://example.com/video.mp4" 
+   ], 
+   "customer" => [
+      "id" => "YOUR-USER-ID" 
+   ], 
+   "webhook" => "https://example.com/webhook" 
+]));
+
+var_dump($response);
+```
+
+### Create a Live Stream Complaint Moderation
+
+Use the `createComplaintLivestream` method to create a live stream complaint moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createComplaintLivestream(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateLiveContentComplaintRequest([
+   "complained_at" => "2022-11-04T12:04:08.658Z", 
+   "customer" => [
+      "id" => "YOUR-USER-ID" 
+   ], 
+   "stream" => [
+      "external_id" => "YOUR-LIVESTREAM-ID", 
+      "tags" => [
+        "VIOLATION_1" 
+      ]
+   ], 
+   "webhook" => "https://example.com/webhook" 
+]));
+
+var_dump($response);
+```
+
+### Create a Consent Complaint
+
+Use the `createComplaintConsent` method to create a complaint consent moderation, like the example below:
+
+```php
+<?php
+
+require(__DIR__ . "/vendor/autoload.php");
+
+$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
+//$moderation->useSandbox();
+
+$response = $moderation->createComplaintConsent(new \VerifyMyContent\SDK\Complaint\Entity\Requests\CreateConsentComplaintRequest([
+   "content" => [
+      "external_id" => "YOUR-VIDEO-ID" 
+   ], 
+   "customer" => [
+      "id" => "YOUR-USER-ID" 
+   ], 
+   "webhook" => "https://example.com/webhook"
+]));
+
+var_dump($response);
 ```
 
 # Webhook Security

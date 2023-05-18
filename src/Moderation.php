@@ -13,7 +13,6 @@ use VerifyMyContent\SDK\ContentModeration\Entity\Requests\CreateStaticContentMod
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\CreateLiveContentModerationResponse;
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\CreateStaticContentModerationResponse;
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetLiveContentModerationResponse;
-use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetStaticContentModerationParticipantsResponse;
 use VerifyMyContent\SDK\ContentModeration\Entity\Responses\GetStaticContentModerationResponse;
 use VerifyMyContent\SDK\Core\Validator\ValidationException;
 use VerifyMyContent\SDK\VerifyMyContent;
@@ -68,19 +67,6 @@ class Moderation {
     public function get($id)
     {
         return $this->contentModerationClient->getStaticContentModeration($id);
-    }
-
-    /**
-     * Retrieve uploader data
-     *
-     * @param string $id
-     * @return GetStaticContentModerationParticipantsResponse
-     * @throws InvalidStatusCodeException
-     * @throws ValidationException
-     */
-    public function participants($id)
-    {
-        return $this->contentModerationClient->getStaticContentModerationParticipants($id);
     }
 
   /**

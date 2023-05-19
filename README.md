@@ -58,25 +58,10 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
+$response = $moderation->get($moderationID);
+
 // Printing current status
 echo "Status: {$response->status}";
-```
-
-### Get Uploader Data
-
-It will return uploader's identity check information if the moderation status is `Approved`. Example:
-
-```php
-<?php
-
-require(__DIR__ . "/vendor/autoload.php");
-
-$moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
-//$moderation->useSandbox();
-
-$response = $moderation->participants($moderationID);
-
-var_dump($response);
 ```
 
 ## Live Stream

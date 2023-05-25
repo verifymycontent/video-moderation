@@ -121,7 +121,7 @@ class Moderation {
       try {
         $this->contentModerationClient->startLiveContentModeration($id);
         return true;
-      }catch(InvalidStatusCodeException $e) {
+      } catch(InvalidStatusCodeException $e) {
         return false;
       }
     }
@@ -139,7 +139,7 @@ class Moderation {
       try {
         $this->contentModerationClient->changeLiveContentRule($id, $data);
         return true;
-      }catch(InvalidStatusCodeException $e) {
+      } catch(InvalidStatusCodeException $e) {
         return false;
       }
     }

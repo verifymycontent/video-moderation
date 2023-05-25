@@ -104,7 +104,12 @@ class Moderation {
      */
     public function startLivestream($id)
     {
-      $this->contentModerationClient->startLiveContentModeration($id);
+      try {
+        $this->contentModerationClient->startLiveContentModeration($id);
+        return true;
+      } catch(InvalidStatusCodeException $e) {
+        return false;
+      }
     }
 
     /**
@@ -117,7 +122,12 @@ class Moderation {
      */
     public function changeLivestreamRule($id, $data)
     {
-      $this->contentModerationClient->changeLiveContentRule($id, $data);
+      try {
+        $this->contentModerationClient->changeLiveContentRule($id, $data);
+        return true;
+      } catch(InvalidStatusCodeException $e) {
+        return false;
+      }
     }
 
     /**

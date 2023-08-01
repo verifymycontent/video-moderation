@@ -115,7 +115,13 @@ require(__DIR__ . "/vendor/autoload.php");
 $moderation = new VerifyMyContent\VideoModeration\Moderation(getenv('VMC_API_KEY'), getenv('VMC_API_SECRET'));
 //$moderation->useSandbox();
 
-$success = $moderation->startLivestream($_GET['id']);
+$success = $moderation->startLivestream($_GET['id'], new \VerifyMyContent\SDK\ContentModeration\Entity\Requests\StartLiveContentModerationRequest([
+    "embed_url" => "https://example.com/live-stream-embed",
+    "stream" => [
+        "protocol" => "rtmps",
+        "url" => "rtmps://your-server:443/your-video-stream"
+    ],
+]));
 var_dump($success === true);
 ```
 

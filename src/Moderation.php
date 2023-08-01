@@ -102,10 +102,10 @@ class Moderation {
      * @return void
      * @throws InvalidStatusCodeException
      */
-    public function startLivestream($id)
+    public function startLivestream($id, $data = null)
     {
       try {
-        $this->contentModerationClient->startLiveContentModeration($id);
+        $this->contentModerationClient->startLiveContentModeration($id, $data);
         return true;
       } catch(InvalidStatusCodeException $e) {
         return false;

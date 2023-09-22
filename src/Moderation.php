@@ -128,7 +128,42 @@ class Moderation {
       } catch(InvalidStatusCodeException $e) {
         return false;
       }
+    }   
+    
+    /**
+    * * Pause livestream moderation
+    *
+    * @param string $id
+    * @return void
+    * @throws InvalidStatusCodeException
+    */
+   public function pauseLivestream($id)
+   {
+     try {
+       $this->contentModerationClient->pauseLivestream($id);
+       return true;
+     } catch(InvalidStatusCodeException $e) {
+       return false;
+     }
+   }
+
+      /**
+    * * Pause livestream moderation
+    *
+    * @param string $id
+    * @return void
+    * @throws InvalidStatusCodeException
+    */
+    public function resumeLivestream($id)
+    {
+      try {
+        $this->contentModerationClient->resumeLivestream($id);
+        return true;
+      } catch(InvalidStatusCodeException $e) {
+        return false;
+      }
     }
+ 
 
     /**
      * * Get livestream
